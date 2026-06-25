@@ -1,0 +1,67 @@
+<section class="page-section">
+  <div class="page-heading">
+    <div>
+      <p class="page-kicker">Instruments</p>
+      <h2>Manage your practice setup</h2>
+      <p>Create, edit, and remove the instruments you want to track.</p>
+    </div>
+  </div>
+
+  <div class="layout-grid">
+    <article class="panel-card">
+      <h3>{{ editingInstrumentId ? 'Edit instrument' : 'New instrument' }}</h3>
+
+      <label>
+        <span>Name</span>
+        <input [(ngModel)]="formModel.name" name="instrumentName" maxlength="120" placeholder="Piano" />
+      </label>
+
+      <label>
+        <span>Color</span>
+        <input [(ngModel)]="formModel.color" name="instrumentColor" type="color" />
+      </label>
+
+      @if (error) {
+        <p class="form-error">{{ error }}</p>
+      }
+
+      <div class="button-row">
+        <button type="button" class="primary-button" (click)="save()" [disabled]="saving">
+          {{ editingInstrumentId ? 'Save changes' : 'Create instrument' }}
+        </button>
+        @if (editingInstrumentId) {
+          <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+    </article>
+
+    <article class="panel-card">
+      <h3>Existing instruments</h3>
+
+      @if (loading) {
+        <p class="state-message">Loading instruments…</p>
+      } @else if (instruments.length === 0) {
+        <p class="state-message">No instruments yet. Start by creating your first one.</p>
+      } @else {
+        <div class="collection-list">
+          @for (instrument of instruments; track instrument.id) {
+            <div class="collection-row">
+              <div>
+                <div class="instrument-tag">
+                  <span class="color-dot" [style.background]="instrument.color"></span>
+                  <strong>{{ instrument.name }}</strong>
+                </div>
+                <small>Created {{ instrument.createdAt | date: 'mediumDate' }}</small>
+              </div>
+
+              <div class="button-row compact">
+                <button type="button" class="secondary-button" (click)="edit(instrument)">Edit</button>
+                <button type="button" class="danger-button" (click)="remove(instrument)">Delete</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </article>
+  </div>
+</section>

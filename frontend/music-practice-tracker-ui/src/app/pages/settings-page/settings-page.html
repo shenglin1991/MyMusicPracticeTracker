@@ -1,0 +1,37 @@
+<section class="page-section">
+  <div class="page-heading">
+    <div>
+      <p class="page-kicker">Settings</p>
+      <h2>Simple goals</h2>
+      <p>Set your daily and weekly practice targets in minutes.</p>
+    </div>
+  </div>
+
+  <article class="panel-card">
+    @if (loading) {
+      <p class="state-message">Loading goal settings…</p>
+    } @else {
+      <label>
+        <span>Daily goal (minutes)</span>
+        <input [(ngModel)]="goalSettings.dailyTargetMinutes" name="dailyTargetMinutes" min="0" max="1440" type="number" />
+      </label>
+
+      <label>
+        <span>Weekly goal (minutes)</span>
+        <input [(ngModel)]="goalSettings.weeklyTargetMinutes" name="weeklyTargetMinutes" min="0" max="10080" type="number" />
+      </label>
+
+      @if (message) {
+        <p class="success-message">{{ message }}</p>
+      }
+
+      @if (error) {
+        <p class="error-message">{{ error }}</p>
+      }
+
+      <div class="button-row">
+        <button type="button" class="primary-button" (click)="save()" [disabled]="saving">Save goals</button>
+      </div>
+    }
+  </article>
+</section>

@@ -1,0 +1,64 @@
+.page-section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.page-kicker,
+label span,
+.state-message {
+  color: #475569;
+}
+
+.page-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.panel-card {
+  max-width: 32rem;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+label {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.85rem;
+  padding: 0.8rem 0.95rem;
+  font: inherit;
+}
+
+.button-row {
+  margin-top: 1rem;
+}
+
+.primary-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+}
+
+.success-message {
+  color: #15803d;
+}
+
+.error-message {
+  color: #b91c1c;
+}
