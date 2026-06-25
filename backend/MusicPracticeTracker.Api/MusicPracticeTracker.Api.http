@@ -1,0 +1,14 @@
+@MusicPracticeTracker_Api_HostAddress = http://localhost:5081
+
+GET {{MusicPracticeTracker_Api_HostAddress}}/api/instruments
+Accept: application/json
+
+###
+
+GET {{MusicPracticeTracker_Api_HostAddress}}/api/dashboard
+Accept: application/json
+
+###
+
+GET {{MusicPracticeTracker_Api_HostAddress}}/api/goals
+Accept: application/json

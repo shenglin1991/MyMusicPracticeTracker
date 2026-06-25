@@ -1,0 +1,127 @@
+<section class="page-section">
+  <div class="page-heading">
+    <div>
+      <p class="page-kicker">Sessions</p>
+      <h2>Practice sessions and timer</h2>
+      <p>Track sessions manually or launch a lightweight timer for a live practice run.</p>
+    </div>
+  </div>
+
+  @if (error) {
+    <p class="form-error">{{ error }}</p>
+  }
+
+  <div class="layout-grid">
+    <article class="panel-card">
+      <h3>Quick timer</h3>
+      <label>
+        <span>Instrument</span>
+        <select [(ngModel)]="timerInstrumentId" name="timerInstrumentId">
+          <option value="">Select an instrument</option>
+          @for (instrument of instruments; track instrument.id) {
+            <option [value]="instrument.id">{{ instrument.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Notes</span>
+        <textarea [(ngModel)]="timerNotes" name="timerNotes" rows="3" placeholder="Scales, etudes, repertoire…"></textarea>
+      </label>
+
+      <div class="timer-display">{{ timerElapsed }}</div>
+
+      <div class="button-row">
+        @if (!timerStartedAt) {
+          <button type="button" class="primary-button" (click)="startTimer()">Start timer</button>
+        } @else {
+          <button type="button" class="primary-button" (click)="stopTimer()">Stop & save</button>
+          <button type="button" class="secondary-button" (click)="cancelTimer()">Cancel</button>
+        }
+      </div>
+    </article>
+
+    <article class="panel-card">
+      <h3>{{ editingSessionId ? 'Edit session' : 'New manual session' }}</h3>
+
+      <label>
+        <span>Instrument</span>
+        <select [(ngModel)]="formModel.instrumentId" name="sessionInstrumentId">
+          <option value="">Select an instrument</option>
+          @for (instrument of instruments; track instrument.id) {
+            <option [value]="instrument.id">{{ instrument.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Start time</span>
+        <input [(ngModel)]="formModel.startTime" name="sessionStartTime" type="datetime-local" />
+      </label>
+
+      <label>
+        <span>End time</span>
+        <input [(ngModel)]="formModel.endTime" name="sessionEndTime" type="datetime-local" />
+      </label>
+
+      <label>
+        <span>Notes</span>
+        <textarea [(ngModel)]="formModel.notes" name="sessionNotes" rows="4" placeholder="What did you work on?"></textarea>
+      </label>
+
+      <div class="button-row">
+        <button type="button" class="primary-button" (click)="save()">
+          {{ editingSessionId ? 'Save session' : 'Create session' }}
+        </button>
+        @if (editingSessionId) {
+          <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+    </article>
+  </div>
+
+  <article class="panel-card">
+    <div class="filter-row">
+      <h3>Session history</h3>
+      <div class="filter-controls">
+        <select [(ngModel)]="filters.instrumentId" name="filterInstrumentId">
+          <option value="">All instruments</option>
+          @for (instrument of instruments; track instrument.id) {
+            <option [value]="instrument.id">{{ instrument.name }}</option>
+          }
+        </select>
+        <input [(ngModel)]="filters.from" name="filterFrom" type="date" />
+        <input [(ngModel)]="filters.to" name="filterTo" type="date" />
+        <button type="button" class="secondary-button" (click)="loadSessions()">Apply filters</button>
+      </div>
+    </div>
+
+    @if (loading) {
+      <p class="state-message">Loading sessions…</p>
+    } @else if (sessions.length === 0) {
+      <p class="state-message">No sessions found for the current filters.</p>
+    } @else {
+      <div class="collection-list">
+        @for (session of sessions; track session.id) {
+          <div class="session-card">
+            <div class="session-card-header">
+              <div class="instrument-tag">
+                <span class="color-dot" [style.background]="session.instrumentColor"></span>
+                <strong>{{ session.instrumentName }}</strong>
+              </div>
+              <strong>{{ session.durationMinutes }} min</strong>
+            </div>
+
+            <p>{{ session.startTime | date: 'medium' }} → {{ session.endTime | date: 'shortTime' }}</p>
+            <p class="notes">{{ session.notes || 'No notes for this session.' }}</p>
+
+            <div class="button-row compact">
+              <button type="button" class="secondary-button" (click)="edit(session)">Edit</button>
+              <button type="button" class="danger-button" (click)="remove(session)">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </article>
+</section>

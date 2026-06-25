@@ -1,0 +1,23 @@
+<div class="app-shell">
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Personal SaaS starter</p>
+      <h1>Music Practice Tracker</h1>
+      <p class="subtitle">
+        Track daily practice time across instruments, sessions, goals, and progress.
+      </p>
+    </div>
+
+    <nav class="app-nav" aria-label="Primary navigation">
+      @for (item of navigationItems; track item.path) {
+        <a routerLink="{{ item.path }}" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </header>
+
+  <main class="app-content">
+    <router-outlet />
+  </main>
+</div>

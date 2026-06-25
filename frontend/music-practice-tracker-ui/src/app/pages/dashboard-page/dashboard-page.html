@@ -1,0 +1,78 @@
+<section class="page-section">
+  <div class="page-heading">
+    <div>
+      <p class="page-kicker">Dashboard</p>
+      <h2>Practice summary</h2>
+      <p>Monitor today, this week, this month, total time, and current goal progress.</p>
+    </div>
+
+    <button type="button" class="secondary-button" (click)="load()">Refresh</button>
+  </div>
+
+  @if (loading) {
+    <p class="state-message">Loading dashboard…</p>
+  } @else if (error) {
+    <p class="state-message error">{{ error }}</p>
+  } @else if (summary) {
+    <div class="stats-grid">
+      <article class="stat-card">
+        <span>Today</span>
+        <strong>{{ summary.todayMinutes }} min</strong>
+      </article>
+      <article class="stat-card">
+        <span>This week</span>
+        <strong>{{ summary.weekMinutes }} min</strong>
+      </article>
+      <article class="stat-card">
+        <span>This month</span>
+        <strong>{{ summary.monthMinutes }} min</strong>
+      </article>
+      <article class="stat-card">
+        <span>Total</span>
+        <strong>{{ summary.totalMinutes }} min</strong>
+      </article>
+    </div>
+
+    <div class="content-grid">
+      <article class="panel-card">
+        <h3>Goals</h3>
+        <div class="goal-row">
+          <div>
+            <span>Daily goal</span>
+            <strong>{{ summary.goals.todayProgressMinutes }} / {{ summary.goals.dailyTargetMinutes }} min</strong>
+          </div>
+          <span>{{ summary.goals.dailyCompletionPercentage | number: '1.0-2' }}%</span>
+        </div>
+        <div class="progress-bar"><span [style.width.%]="summary.goals.dailyCompletionPercentage"></span></div>
+
+        <div class="goal-row">
+          <div>
+            <span>Weekly goal</span>
+            <strong>{{ summary.goals.weekProgressMinutes }} / {{ summary.goals.weeklyTargetMinutes }} min</strong>
+          </div>
+          <span>{{ summary.goals.weeklyCompletionPercentage | number: '1.0-2' }}%</span>
+        </div>
+        <div class="progress-bar"><span [style.width.%]="summary.goals.weeklyCompletionPercentage"></span></div>
+      </article>
+
+      <article class="panel-card">
+        <h3>Breakdown by instrument</h3>
+        @if (summary.breakdownByInstrument.length === 0) {
+          <p class="state-message">Create an instrument and add a session to see your distribution.</p>
+        } @else {
+          <div class="breakdown-list">
+            @for (item of summary.breakdownByInstrument; track item.instrumentId) {
+              <div class="breakdown-row">
+                <div class="instrument-tag">
+                  <span class="color-dot" [style.background]="item.instrumentColor"></span>
+                  {{ item.instrumentName }}
+                </div>
+                <strong>{{ item.totalMinutes }} min</strong>
+              </div>
+            }
+          </div>
+        }
+      </article>
+    </div>
+  }
+</section>
