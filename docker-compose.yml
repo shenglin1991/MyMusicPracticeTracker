@@ -15,5 +15,32 @@ services:
       timeout: 5s
       retries: 10
 
+  api:
+    build:
+      context: .
+      dockerfile: backend/MusicPracticeTracker.Api/Dockerfile
+    container_name: music-practice-tracker-api
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DATABASE: music_practice_tracker
+    ports:
+      - '8080:8080'
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend/music-practice-tracker-ui
+      dockerfile: Dockerfile
+    container_name: music-practice-tracker-frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+
 volumes:
   music-practice-tracker-mysql-data:
