@@ -25,10 +25,14 @@ public static class DatabaseConfiguration
             Port = parsedPort,
             Database = database,
             UserID = username,
-            Password = password,
-            SslMode = MySqlSslMode.Disabled,
-            AllowPublicKeyRetrieval = true
+            Password = password
         };
+
+        var environment = configuration["ASPNETCORE_ENVIRONMENT"];
+        var isDevelopment = string.Equals(environment, "Development", StringComparison.OrdinalIgnoreCase);
+
+        connectionStringBuilder.SslMode = isDevelopment ? MySqlSslMode.Disabled : MySqlSslMode.Preferred;
+        connectionStringBuilder.AllowPublicKeyRetrieval = isDevelopment;
 
         return connectionStringBuilder.ConnectionString;
     }
